@@ -1,6 +1,5 @@
 import React from 'react'
 import { Animated, View, Keyboard, LayoutAnimation } from 'react-native'
-import { connect } from 'react-redux'
 import Styles from './styles'
 import { Metrics } from '../../theme'
 // import CongressActions from '../redux/CongressRedux'
@@ -131,22 +130,5 @@ class SwipeScreen extends React.Component {
   }
 }
 
-SwipeScreen.propTypes = {
-}
-
-const mapStateToProps = state => {
-  return {
-    bills: []//state.congress.bills,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    supportBill: (bill) => dispatch(CongressActions.supportBill(bill)),
-    rejectBill: (bill) => dispatch(CongressActions.rejectBill(bill)),
-    toggleCardExpanded: (cardData) => dispatch(AnimationActions.cardExpand(cardData))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SwipeScreen)
+export default SwipeScreen
 

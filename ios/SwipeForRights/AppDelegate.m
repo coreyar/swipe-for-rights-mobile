@@ -8,8 +8,8 @@
  */
 
 #import "AppDelegate.h"
-
 #import <React/RCTBundleURLProvider.h>
+#import "RCCManager.h"
 #import <React/RCTRootView.h>
 
 @implementation AppDelegate
@@ -26,11 +26,17 @@
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
+  // **********************************************
+  // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****
+  // **********************************************
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
+  //  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  //  UIViewController *rootViewController = [UIViewController new];
+  //  rootViewController.view = rootView;
+  //  self.window.rootViewController = rootViewController;
+  //  [self.window makeKeyAndVisible];
   return YES;
 }
 
