@@ -6,24 +6,12 @@ registerScreens(); // this is where you register all of your app's screens
 
 const start = () => {
   // start the app
-  Navigation.startTabBasedApp({
-    tabs: [
-      {
-        label: 'One',
-        screen: Roots.Splash, // this is a registered name for a screen
-        icon: require('../assets/cake-icon.png'),
-        selectedIcon: require('../assets/cake-icon.png'), // iOS only
-        title: 'Screen One'
-      },
-      {
-        label: 'Two',
-        screen: Roots.Onboard,
-        icon: require('../assets/cake-icon.png'),
-        selectedIcon: require('../assets/cake-icon.png'), // iOS only
-        title: 'Screen Two'
-      }
-    ]
-  });
+  Navigation.startSingleScreenApp({
+    screen: {
+      screen: Roots.Splash,
+      navigatorStyle: {navBarHidden: true},
+    },
+  })
 }
 
 export default start
