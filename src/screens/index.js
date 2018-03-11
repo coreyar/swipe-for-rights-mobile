@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { StackNavigator, addNavigationHelpers, TabNavigator, TabBarTop } from 'react-navigation'
 import type { NavigationDispatch } from 'react-navigation'
-
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
 import Roots from '../constants'
 // Auth
 import OnboardScreen from './auth/onboard-screen'
@@ -40,9 +40,11 @@ export const AppNavigator = StackNavigator(stack)
 
 class RootContainer extends React.Component {
   render() {
+    const addListener = createReduxBoundAddListener("root");
     const navigation = addNavigationHelpers({
       dispatch: this.props.dispatch,
       state: this.props.nav,
+      addListener,
     })
     return (
       <View style={{ flex: 1 }}>

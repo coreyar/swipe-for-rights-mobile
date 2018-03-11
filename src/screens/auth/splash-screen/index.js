@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Text, View } from 'react-native'
+import Roots from '../../../constants'
 import UserActions from '../../../redux/user'
 import { TextInput, ClearButton } from '../../../components'
 import { Metrics } from '../../../theme'
@@ -23,7 +24,7 @@ class SplashScreen extends React.Component {
   }
 
   signup () {
-    this.props.signup(this.state.email, this.state.password, this.props.navigator)
+    this.props.navigation.navigate(Roots.Onboard, {email: this.state.email, password: this.state.password})
   }
 
   render() {
@@ -64,7 +65,6 @@ function mapStateToProps (state, props) {
 
 function mapDisptachToProps(dispatch) {
   return {
-    signup: (email, password, navigator) => dispatch(UserActions.signup(email, password, navigator)),
     login: (email, password) => dispatch(UserActions.login(email, password))
   }
 }
