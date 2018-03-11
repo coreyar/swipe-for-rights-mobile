@@ -1,7 +1,7 @@
 // @flow
 
 import { combineReducers } from 'redux'
-import configureStore from './CreateStore'
+import configureStore, { addListner} from './CreateStore'
 import rootSaga from '../sagas/'
 import { AppNavigator } from '../screens'
 

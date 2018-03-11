@@ -21,9 +21,10 @@ class SplashScreen extends React.Component {
   }
 
   forward() {
+    const { email, password } = this.props.navigation.state.params
     const { street_address, locality, region, postal_code } = this.state
     if (street_address.length > 1 && locality.length > 1 && region.length > 1 && postal_code.length > 1) {
-      this.props.saveAddress(this.state, this.props.navigator)
+      this.props.signUp({email, password, ...this.state})
     }
   }
 
@@ -74,7 +75,7 @@ function mapStateToProps(state) {
 
 function mapDisptachToProps(dispatch) {
   return {
-    saveAddress: (address, navigator) => dispatch(UserActions.saveAddress(address, navigator))
+    signUp: (data) => dispatch(UserActions.signUp(data))
   }
 }
 

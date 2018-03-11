@@ -18,16 +18,15 @@ const create = (baseURL = 'http://127.0.0.1:8080') => {
     return response
   }
 
-  const signup = (email, password) => api.post('signup', {email, password})
+  const signUp = (data) => api.post('signup', {...data})
 
   const saveAddress = (address) => {
-   console.log({...address})
     return api.post('me', {...address})
   }
 
   return {
     login,
-    signup,
+    signUp,
     saveAddress
   }
 }
