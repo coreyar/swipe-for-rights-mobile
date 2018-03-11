@@ -1,5 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Text, View } from 'react-native'
+import UserActions from '../../../redux/user'
 import { AddressAutoComplete, ClearButton } from '../../../components'
 import { Metrics, Colors } from '../../../theme'
 import { formatAddressComponents } from '../../../helpers'
@@ -64,4 +66,16 @@ class SplashScreen extends React.Component {
   }
 }
 
-export default SplashScreen
+function mapStateToProps(state) {
+  return {
+    error: state.network.error
+  }
+}
+
+function mapDisptachToProps(dispatch) {
+  return {
+    saveAddress: (address, navigator) => dispatch(UserActions.saveAddress(address, navigator))
+  }
+}
+
+export default connect(mapStateToProps, mapDisptachToProps)(SplashScreen)
