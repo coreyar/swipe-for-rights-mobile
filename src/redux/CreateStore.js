@@ -1,4 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux'
+import {
+  createReduxBoundAddListener,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers'
 import { createLogger } from 'redux-logger'
 import createSagaMiddleware from 'redux-saga'
 import R from 'ramda'
@@ -12,6 +16,13 @@ export default (rootReducer, rootSaga) => {
   const middleware = []
   const enhancers = []
 
+  /* ------------- Navigation Middleware ------------- */
+  const navMiddleware = createReactNavigationReduxMiddleware(
+    "root",
+    state => state.nav,
+  )
+  
+  middleware.push(navMiddleware)
   /* ------------- Saga Middleware ------------- */
 
   const sagaMiddleware = createSagaMiddleware()

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { Provider, Subscribe, Container } from 'unstated'
+import Roots from '../../../constants'
 import UserActions from '../../../redux/user'
 import { TextInput, ClearButton } from '../../../components'
 import { Metrics } from '../../../theme'
@@ -26,7 +27,7 @@ function Login(props) {
           <Text style={{ color: 'red', fontSize: 17 }}>{loginState.error}</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
             <ClearButton text="Login" onPress={() => loginState.login()} />
-            <ClearButton text="Sign Up" onPress={() => props.navigate('Onboard')} />
+            <ClearButton text="Sign Up" onPress={() => props.navigate(Roots.Onboard)} />
           </View>
         </View>
       )}

@@ -26,9 +26,9 @@ export default function * root () {
     takeLatest(NetworkTypes.START_CALL, network),
     takeLatest(UserTypes.LOGIN, user, api, store),
     takeLatest(UserTypes.LOGIN_SUCCESS, user, api, store),
-    takeLatest(UserTypes.SIGNUP, user, api, store),
+    takeLatest(UserTypes.SIGN_UP, user, api, store),
     takeLatest(UserTypes.SAVE_ADDRESS, user, api, store),
-    takeLatest(UserTypes.SIGNUP_SUCCESS, user, api, store),
+    takeLatest(UserTypes.SIGN_UP_SUCCESS, user, api, store),
 
   ])
 }
