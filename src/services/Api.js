@@ -18,7 +18,7 @@ const create = (baseURL = 'http://127.0.0.1:8080') => {
     return response
   }
 
-  const signup = (email, password) => api.post('signup', {email, password})
+  const signUp = (email, password, location) => api.post('signup', {email, password, location})
 
   const saveAddress = (address) => {
    console.log({...address})
@@ -27,7 +27,7 @@ const create = (baseURL = 'http://127.0.0.1:8080') => {
 
   return {
     login,
-    signup,
+    signUp,
     saveAddress
   }
 }
