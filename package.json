@@ -12,7 +12,7 @@
     "axios": "^0.17.1",
     "ramda": "^0.25.0",
     "react": "16.0.0",
-    "react-native": "0.51.0",
+    "react-native": "0.54.0",
     "react-native-animatable": "^1.2.4",
     "react-navigation": "^1.5.1",
     "react-navigation-redux-helpers": "^1.0.3",
@@ -21,7 +21,8 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "reduxsauce": "^0.7.0",
-    "seamless-immutable": "^7.1.2"
+    "seamless-immutable": "^7.1.2",
+    "unstated": "^1.2.0"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
