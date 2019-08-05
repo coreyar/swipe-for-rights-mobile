@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { View, Text } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -14,7 +15,6 @@ const styles =  StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: Metrics.doubleBaseMargin,
-    // marginVertical: Metrics.section,
     backgroundColor: Colors.primary
   },
   contentContainer: {
@@ -37,12 +37,14 @@ export default class AlertMessage extends React.Component {
   props: AlertMessageProps
 
   render () {
-    let messageComponent = null
-    if (this.props.show) {
-      const { title } = this.props
+    const {
+ children, show, style, title 
+} = this.props
+    const messageComponent = null
+    if (show) {
       return (
         <Animatable.View
-          style={[styles.container, this.props.style]}
+          style={[styles.container, style]}
           delay={800}
           animation='bounceIn'
         >
@@ -53,7 +55,7 @@ export default class AlertMessage extends React.Component {
               style={styles.icon}
             /> */}
             <Text allowFontScaling={false} style={styles.message}>{title && title.toUpperCase()}</Text>
-            {this.props.children}
+            {children}
           </View>
         </Animatable.View>
       )
@@ -62,8 +64,3 @@ export default class AlertMessage extends React.Component {
     return messageComponent
   }
 }
-
-AlertMessage.defaultProps = {
-  show: true
-}
-

@@ -1,4 +1,5 @@
-import React from 'react'
+// @flow
+import * as React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { Fonts, Colors, Metrics } from '../../theme'
 
@@ -8,12 +9,11 @@ const styles =  StyleSheet.create({
     width: 100,
     borderRadius: 5,
     margin: Metrics.doubleBaseMargin,
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.darkBlue,
     justifyContent: 'center'
-    // alignItems: 'space-between'
   },
   buttonText: {
-    color: Colors.snow,
+    color: Colors.white,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: Fonts.size.medium,
@@ -21,24 +21,33 @@ const styles =  StyleSheet.create({
   }
 })
 
-type RoundedButtonProps = {
+type Props = {
   onPress: () => void,
-  text?: string,
-  children?: string,
-  navigator?: Object
+  text?: React.Node,
+  children?: ?string,
 }
 
-export default class RoundedButton extends React.Component {
-  props: RoundedButtonProps
+export default class RoundedButton extends React.Component<Props> {
+  static defaultProps = {
+    children: null,
+    text: '',
+  }
+
+  props: Props
 
   getText () {
-    const buttonText = this.props.text || this.props.children || ''
-    return buttonText.toUpperCase()
+    const { children, text } = this.props
+    const buttonText = text || children || ''
+    if (typeof buttonText === 'string') {
+      return buttonText.toUpperCase()
+    }
+    return buttonText
   }
 
   render () {
+    const { onPress } = this.props
     return (
-      <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.buttonText}>{this.getText()}</Text>
       </TouchableOpacity>
     )

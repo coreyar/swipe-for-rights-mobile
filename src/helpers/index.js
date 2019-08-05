@@ -1,4 +1,5 @@
-
+// @flow
+import produce from "immer"
 
 export function formatAddressComponents(locationArray: Array<Object>) {
   const locationKeys = ['street_number', 'route', 'locality', 'administrative_area_level_1', 'postal_code']
@@ -29,3 +30,6 @@ export function formatAddressComponents(locationArray: Array<Object>) {
   }
   return location
 }
+
+// $FlowFixMe
+export const spread = produce(Object.assign)

@@ -1,6 +1,3 @@
-// @flow
-/* eslint-disable */
-
 import React from 'react'
 import createReactClass from 'create-react-class'
 import PropTypes from 'prop-types'
@@ -185,7 +182,7 @@ const GooglePlacesAutocomplete = createReactClass({
   },
 
   buildRowsFromResults(results) {
-    var res = null;
+    let res = null;
 
     if (results.length === 0 || this.props.predefinedPlacesAlwaysVisible === true) {
       res = [...this.props.predefinedPlaces];
@@ -267,7 +264,7 @@ const GooglePlacesAutocomplete = createReactClass({
     navigator.geolocation.getCurrentPosition(
       (position) => {
         if (this.props.nearbyPlacesAPI === 'None') {
-          let currentLocation = {
+          const currentLocation = {
             description: this.props.currentLocationLabel,
             geometry: {
               location: {
@@ -291,7 +288,7 @@ const GooglePlacesAutocomplete = createReactClass({
   },
 
   _enableRowLoader(rowData) {
-    let rows = this.buildRowsFromResults(this._results);
+    const rows = this.buildRowsFromResults(this._results);
     for (let i = 0; i < rows.length; i++) {
       if ((rows[i].place_id === rowData.place_id) || (rows[i].isCurrentLocation === true && rowData.isCurrentLocation === true)) {
         rows[i].isLoading = true;
@@ -360,7 +357,7 @@ const GooglePlacesAutocomplete = createReactClass({
             }
 
             if (!this.props.onNotFound)
-              console.warn('google places autocomplete: ' + responseJSON.status);
+              console.warn(`google places autocomplete: ${  responseJSON.status}`);
             else
               this.props.onNotFound(responseJSON);
 
@@ -374,11 +371,11 @@ const GooglePlacesAutocomplete = createReactClass({
             this.props.onFail();
         }
       };
-      request.open('GET', 'https://maps.googleapis.com/maps/api/place/details/json?' + Qs.stringify({
+      request.open('GET', `https://maps.googleapis.com/maps/api/place/details/json?${  Qs.stringify({
         key: this.props.query.key,
         placeid: rowData.place_id,
         language: this.props.query.language,
-      }));
+      })}`);
       request.send();
     } else if (rowData.isCurrentLocation === true) {
 
@@ -403,7 +400,7 @@ const GooglePlacesAutocomplete = createReactClass({
 
       delete rowData.isLoading;
 
-      let predefinedPlace = this._getPredefinedPlace(rowData);
+      const predefinedPlace = this._getPredefinedPlace(rowData);
 
       // sending predefinedPlace as details for predefined places
       this.props.onPress(predefinedPlace, predefinedPlace);
@@ -427,7 +424,7 @@ const GooglePlacesAutocomplete = createReactClass({
   _filterResultsByTypes(responseJSON, types) {
     if (types.length === 0) return responseJSON.results;
 
-    var results = [];
+    const results = [];
     for (let i = 0; i < responseJSON.results.length; i++) {
       let found = false;
       for (let j = 0; j < types.length; j++) {
@@ -461,7 +458,7 @@ const GooglePlacesAutocomplete = createReactClass({
 
           if (typeof responseJSON.results !== 'undefined') {
             if (this.isMounted()) {
-              var results = [];
+              let results = [];
               if (this.props.nearbyPlacesAPI === 'GoogleReverseGeocoding') {
                 results = this._filterResultsByTypes(responseJSON, this.props.filterReverseGeocodingByTypes);
               } else {
@@ -474,7 +471,7 @@ const GooglePlacesAutocomplete = createReactClass({
             }
           }
           if (typeof responseJSON.error_message !== 'undefined') {
-            console.warn('google places autocomplete: ' + responseJSON.error_message);
+            console.warn(`google places autocomplete: ${  responseJSON.error_message}`);
           }
         } else {
           // console.warn("google places autocomplete: request could not be completed or has been aborted");
@@ -484,17 +481,17 @@ const GooglePlacesAutocomplete = createReactClass({
       let url = '';
       if (this.props.nearbyPlacesAPI === 'GoogleReverseGeocoding') {
         // your key must be allowed to use Google Maps Geocoding API
-        url = 'https://maps.googleapis.com/maps/api/geocode/json?' + Qs.stringify({
-          latlng: latitude + ',' + longitude,
+        url = `https://maps.googleapis.com/maps/api/geocode/json?${  Qs.stringify({
+          latlng: `${latitude  },${  longitude}`,
           key: this.props.query.key,
           ...this.props.GoogleReverseGeocodingQuery,
-        });
+        })}`;
       } else {
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + Qs.stringify({
-          location: latitude + ',' + longitude,
+        url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${  Qs.stringify({
+          location: `${latitude  },${  longitude}`,
           key: this.props.query.key,
           ...this.props.GooglePlacesSearchQuery,
-        });
+        })}`;
       }
 
       request.open('GET', url);
@@ -529,13 +526,13 @@ const GooglePlacesAutocomplete = createReactClass({
             }
           }
           if (typeof responseJSON.error_message !== 'undefined') {
-            console.warn('google places autocomplete: ' + responseJSON.error_message);
+            console.warn(`google places autocomplete: ${  responseJSON.error_message}`);
           }
         } else {
           // console.warn("google places autocomplete: request could not be completed or has been aborted");
         }
       };
-      request.open('GET', 'https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=' + encodeURIComponent(text) + '&' + Qs.stringify(this.props.query));
+      request.open('GET', `https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=${  encodeURIComponent(text)  }&${  Qs.stringify(this.props.query)}`);
       request.send();
     } else {
       this._results = [];
@@ -548,7 +545,7 @@ const GooglePlacesAutocomplete = createReactClass({
   _onChangeText(text) {
     this._request(text);
     this.setState({
-      text: text,
+      text,
       listViewDisplayed: true,
     });
   },
@@ -566,7 +563,7 @@ const GooglePlacesAutocomplete = createReactClass({
   _getRowLoader() {
     return (
       <ActivityIndicator
-        animating={true}
+        animating
         size="small"
       />
     );
@@ -580,7 +577,7 @@ const GooglePlacesAutocomplete = createReactClass({
     return (
       <Text style={[{flex: 1}, defaultStyles.description, this.props.styles.description, rowData.isPredefinedPlace ? this.props.styles.predefinedPlacesDescription : {}]}
         numberOfLines={1}
-        ellipsizeMode={'tail'}
+        ellipsizeMode="tail"
       >
         {this._renderDescription(rowData)}
       </Text>
@@ -614,7 +611,7 @@ const GooglePlacesAutocomplete = createReactClass({
         style={{ flex: 1, zIndex: 200 }}
         scrollEnabled={this.props.isRowScrollable}
         keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
-        horizontal={true}
+        horizontal
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
         <TouchableHighlight
@@ -663,7 +660,7 @@ const GooglePlacesAutocomplete = createReactClass({
     }
 
     for (let i = 0; i < this.state.dataSource.getRowCount(); i++) {
-      let row = this.state.dataSource.getRowData(0, i);
+      const row = this.state.dataSource.getRowData(0, i);
 
       if (!row.hasOwnProperty('isCurrentLocation') && !row.hasOwnProperty('isPredefinedPlace')) {
         return true
@@ -690,7 +687,7 @@ const GooglePlacesAutocomplete = createReactClass({
       return (
          <View style={defaultStyles.containerStyle}>
           <ListView
-            keyboardShouldPersistTaps={true}
+            keyboardShouldPersistTaps
             keyboardDismissMode="on-drag"
             style={[defaultStyles.listView, this.props.styles.listView]}
             dataSource={this.state.dataSource}
@@ -706,11 +703,11 @@ const GooglePlacesAutocomplete = createReactClass({
     return null;
   },
   render() {
-    let {
+    const {
       onFocus,
       ...userProps
     } = this.props.textInputProps;
-    let text = this.state.text
+    let {text} = this.state
     if (this.props.override && this.props.override !== text && !this.state.listViewDisplayed) {
       text = this.props.override
     }

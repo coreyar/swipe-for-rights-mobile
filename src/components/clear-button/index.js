@@ -1,10 +1,11 @@
+// @flow
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { Fonts, Colors, Metrics } from '../../theme'
 
 const styles =  StyleSheet.create({
   buttonText: {
-    color: Colors.snow,
+    color: Colors.white,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: Fonts.size.medium,
@@ -12,25 +13,31 @@ const styles =  StyleSheet.create({
   }
 })
 
-type RoundedButtonProps = {
+type Props = {
   onPress: () => void,
   text?: string,
   children?: string,
-  navigator?: Object
 }
 
-export default class RoundedButton extends React.Component {
-  props: RoundedButtonProps
+export default class RoundedButton extends React.Component<Props> {
+  static defaultProps = {
+    children: null,
+    text: '',
+  }
+
+  props: Props
 
   getText () {
-    const buttonText = this.props.text || this.props.children || ''
+    const { children, text } = this.props
+    const buttonText = text || children || ''
     return buttonText.toUpperCase()
   }
 
   render () {
+    const { onPress, text } = this.props
     return (
-      <TouchableOpacity onPress={this.props.onPress}>
-        <Text style={styles.buttonText}>{this.props.text}</Text>
+      <TouchableOpacity onPress={onPress}>
+        <Text style={styles.buttonText}>{text}</Text>
       </TouchableOpacity>
     )
   }

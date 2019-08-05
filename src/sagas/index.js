@@ -1,5 +1,6 @@
+// @flow
 import { takeLatest, all } from 'redux-saga/effects'
-import API from '../services/Api'
+import APIService from '../helpers/Api'
 
 /* ------------- Types ------------- */
 import { NetworkTypes } from '../redux/network'
@@ -10,18 +11,18 @@ import { UserTypes } from '../redux/user'
 import { network } from './network'
 import { user } from './user'
 
+/* ------------- Navigation ------------- */
+import store from ".."
+
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
 // to the sagas which need it.
 // const api = DebugSettings.useFixtures ? FixtureAPI : API.create()
-const api = API.create()
-
-/* ------------- Navigation ------------- */
-import store from '../'
+const api = APIService
 
 /* ------------- Connect Types To Sagas ------------- */
-export default function * root () {
+export default function * root (): GeneratorType {
   yield all([
     takeLatest(NetworkTypes.START_CALL, network),
     takeLatest(UserTypes.LOGIN, user, api, store),

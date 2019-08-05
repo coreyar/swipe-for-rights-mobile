@@ -1,14 +1,15 @@
 // @flow
-
-import { put, call, select } from 'redux-saga/effects'
-import UserActions, { UserTypes } from '../redux/user'
+import { put } from 'redux-saga/effects'
+import type { StandardAction} from 'redux'
 import { NavigationActions } from 'react-navigation'
+import ApiService from '../helpers/Api'
+import UserActions, { UserTypes } from '../redux/user'
 import NetworkActions from '../redux/network'
-import { userSelector } from '../selectors'
 import Roots from '../constants'
+import type { Store } from '../redux'
 
 
-export function* user(api, store, action) {
+export function* user(api: ApiService, store: Store, action: StandardAction): GeneratorType {
   if (action.type === UserTypes.LOGIN) {
     const { email, password} = action
     yield put(NetworkActions.startCall(api.login, [email, password], UserActions.loginSuccess))
@@ -21,3 +22,6 @@ export function* user(api, store, action) {
     yield put(NavigationActions.navigate({ routeName: Roots.Swipe }))
   }
 }
+
+
+export default { }
