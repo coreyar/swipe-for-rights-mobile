@@ -1,209 +1,212 @@
 // @flow
 
-import React from 'react'
-import { TouchableWithoutFeedback, StyleSheet, View, TextInput, Text, Animated } from 'react-native'
+import React from 'react';
+import {
+  TouchableWithoutFeedback,
+  View,
+  TextInput,
+  Text,
+  Animated
+} from 'react-native';
 
-import { Fonts, Colors, Metrics } from '../../theme'
+import { Colors } from '../../theme';
+import styles from './styles'
 
-type InputPropTypes = {
+type Props = {
   label?: ?string,
   placeholder?: ?string,
   onChangeText: (value: string) => void,
   value: string,
   error?: ?string,
-  isFocused: boolean,
-  secureTextEntry: boolean,
+  isFocused?: boolean,
+  secureTextEntry?: boolean,
   accessoryView?: ?React$Element<*>,
   helpText?: ?string,
-  keyboardType: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'ascii-capable' | 'numbers-and-punctuation' | 'url' | 'number-pad' | 'name-phone-pad' | 'decimal-pad' | 'twitter' | 'web-search',
-  autoFocus: boolean,
+  keyboardType?:
+    | 'default'
+    | 'email-address'
+    | 'numeric'
+    | 'phone-pad'
+    | 'ascii-capable'
+    | 'numbers-and-punctuation'
+    | 'url'
+    | 'number-pad'
+    | 'name-phone-pad'
+    | 'decimal-pad'
+    | 'twitter'
+    | 'web-search',
+  autoFocus?: boolean,
   maxLength?: ?number,
-  style?: StyleSheet.Styles | Object,
+  style?: Object,
   onSubmitEditing?: ?() => void,
-  returnKeyType: string,
-  isAnimated: boolean,
+  isAnimated?: boolean,
   autoCorrect?: ?boolean,
-  focusForAccessory: boolean,
+  focusForAccessory?: boolean
 }
 
-export default class Input extends React.Component {
-  static defaultProps: InputPropTypes = {
+type State = {
+    isFocused: boolean,
+    inputRange: Array<number>,
+    outputRange: Array<number>
+  };
+
+export default class Input extends React.Component<Props, State> {
+  static defaultProps = {
     label: undefined,
     placeholder: undefined,
     error: undefined,
+    isFocused: false,
+    focusForAccessory: false,
+    isAnimated: false,
     secureTextEntry: false,
     accessoryView: undefined,
     helpText: undefined,
     keyboardType: 'default',
     autoFocus: false,
-    value: '',
-    isFocused: false,
-    returnKeyType: 'done',
-    isAnimated: false,
-    focusForAccessory: true,
-    onChangeText: () => { },
     autoCorrect: undefined,
     maxLength: null,
     onSubmitEditing: undefined,
-    style: null,
-  }
+    style: null
+  };
 
-  constructor(props: InputPropTypes) {
-    super(props)
-    this.animated = new Animated.Value(0)
+  props: Props;
+
+  input: ?Object;
+
+  animated: Object;
+
+  constructor(props: Props) {
+    super(props);
+    this.animated = new Animated.Value(0);
+    const { isFocused } = this.props
     this.state = {
-      isFocused: this.props.isFocused || false,
+      isFocused: isFocused || false,
       inputRange: [0, 1],
-      outputRange: [0, 1],
-    }
+      outputRange: [0, 1]
+    };
   }
-
-  state: {
-    isFocused: boolean,
-    inputRange: Array<number>,
-    outputRange: Array<number>,
-  }
-
 
   componentDidMount() {
-    if (this.props.isAnimated) {
-      this.fadeIn()
+    const { isAnimated } = this.props
+    if (isAnimated) {
+      this.fadeIn();
     } else {
-      this.updateRanges()
+      this.updateRanges();
     }
   }
 
-  props: InputPropTypes
-
-  input: ?Object
-  animated: Object
-
-  fadeIn() {
-    Animated.timing(this.animated, {
-      toValue: 1,
-      duration: 1000,
-    }).start()
+  focus = () => {
+    if (this.input) {
+      this.input.focus();
+    }
   }
 
   updateRanges() {
     this.setState({
       inputRange: [1, 1],
-      outputRange: [1, 1],
-    })
+      outputRange: [1, 1]
+    });
   }
 
-  focus() {
-    if (this.input) {
-      this.input.focus()
-    } else {
-      console.warn('Input ref not defined')
-    }
+  fadeIn() {
+    Animated.timing(this.animated, {
+      toValue: 1,
+      duration: 1000
+    }).start();
   }
 
   renderErrorOrHelpText() {
-    const color = this.props.error ? Colors.salmon : Colors.lightGrey
+    const { error, helpText, value } = this.props
+    const color = error ? Colors.salmon : Colors.lightGrey;
 
-    const text = this.props.error || this.props.helpText
+    const text = error || helpText;
 
-    if (text && this.props.value) {
+    if (text && value) {
       return (
-        <Text
-          style={{
-            color,
-            fontSize: 12,
-            lineHeight: 16,
-            marginTop: -6,
-          }}
-        >
+        <Text style={styles.helpText(color)}>
           {text}
         </Text>
-      )
+      );
     }
-    return null
+    return null;
   }
 
   renderAccessoryView() {
+    const { accessoryView, focusForAccessory } = this.props
+    const { isFocused } = this.state
     const accessory = (
-      <View style={{
-        flexDirection: 'column',
-        alignSelf: 'flex-end',
-        marginTop: -24,
-        paddingBottom: 3,
-        backgroundColor: 'transparent',
-        height: 20,
-        width: 20,
-      }}
+      <View
+        style={styles.accessoryView}
       >
-        {this.props.accessoryView}
+        {accessoryView}
       </View>
-    )
-    if (this.props.accessoryView && !this.props.focusForAccessory) {
-      return accessory
-    } else if (this.props.accessoryView && this.state.isFocused) {
-      return accessory
+    );
+    if (accessoryView && !focusForAccessory) {
+      return accessory;
     }
-    return null
+    if (accessoryView && isFocused) {
+      return accessory;
+    }
+    return null;
   }
 
   render() {
-    const active = this.state.isFocused
-    const error = this.props.error
-    const primaryColor = (error ? Colors.salmon : Colors.darkBlue)
+    const {
+      value,
+      label,
+      error,
+      style,
+      keyboardType,
+      onSubmitEditing,
+      autoFocus,
+      autoCorrect,
+      placeholder,
+      maxLength,
+      onChangeText,
+      secureTextEntry,
+    } = this.props;
+    const { isFocused: active, inputRange, outputRange } = this.state;
+    const primaryColor = error ? Colors.salmon : Colors.darkBlue;
 
     const opacity = this.animated.interpolate({
-      inputRange: this.state.inputRange,
-      outputRange: this.state.outputRange,
-    })
-    const accessory = this.renderAccessoryView()
+      inputRange,
+      outputRange
+    });
+    const accessory = this.renderAccessoryView();
     return (
-      <View style={[{ marginBottom: Metrics.marginVertical / 2, height: 48 }, this.props.style]}>
-        <TouchableWithoutFeedback onPress={this.focus.bind(this)}>
+      <View
+        style={[
+          styles.container,
+          style
+        ]}
+      >
+        <TouchableWithoutFeedback onPress={this.focus}>
           <View style={{ flex: 1 }}>
             <Animated.View
-              style={[{
-                marginBottom: 10,
-                borderBottomWidth: active ? 3 : 1,
-                borderBottomColor: 'blue',
-                flex: 1,
-              }]}
+              style={styles.animatedView(active)}
             >
-              <Animated.Text style={StyleSheet.flatten([
-                { color: primaryColor },
-                { opacity },
-              ])}
+              <Animated.Text
+                style={styles.placeholder({color: primaryColor, opacity})}
               >
-                {this.props.placeholder || this.props.label}
+                {placeholder || label}
               </Animated.Text>
               <TextInput
-                secureTextEntry={this.props.secureTextEntry}
+                secureTextEntry={secureTextEntry}
                 underlineColorAndroid="rgba(0,0,0,0)"
-                style={StyleSheet.flatten([
-                  {
-                    color: 'black',
-                    fontSize: 17,
-                    flex: 1,
-                    paddingTop: 0,
-                    paddingBottom: 0,
-                    flexDirection: 'column',
-                    marginTop: 2,
-                    // backgroundColor: 'transparent',
-                    ...(accessory ? {
-                      marginRight: 46,
-                    } : {}),
-                  },
-                ])}
-                maxLength={this.props.maxLength}
-                value={this.props.value}
-                onChangeText={this.props.onChangeText}
-                ref={(ref) => { this.input = ref }}
+                style={styles.textInput(!!accessory)}
+                maxLength={maxLength}
+                value={value}
+                onChangeText={onChangeText}
+                ref={ref => {
+                  this.input = ref;
+                }}
                 onFocus={() => this.setState({ isFocused: true })}
                 onBlur={() => this.setState({ isFocused: false })}
-                keyboardType={this.props.keyboardType}
-                onSubmitEditing={this.props.onSubmitEditing}
-                returnKeyType={this.props.returnKeyType}
-                autoFocus={this.props.autoFocus}
-                autoCorrect={this.props.autoCorrect}
-                placeholder={this.props.placeholder}
+                keyboardType={keyboardType}
+                onSubmitEditing={onSubmitEditing}
+                autoFocus={autoFocus}
+                autoCorrect={autoCorrect}
+                placeholder={placeholder}
               />
               {accessory}
             </Animated.View>
@@ -211,6 +214,6 @@ export default class Input extends React.Component {
           </View>
         </TouchableWithoutFeedback>
       </View>
-    )
+    );
   }
 }

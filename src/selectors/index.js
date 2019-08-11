@@ -1,6 +1,6 @@
 // @flow
 import userSelector from './user'
 
-export {
+export default {
   userSelector
 }

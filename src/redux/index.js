@@ -1,16 +1,14 @@
 // @flow
 
 import { combineReducers } from 'redux'
-import configureStore, { addListner} from './CreateStore'
-import rootSaga from '../sagas/'
-import { AppNavigator } from '../screens'
+import configureStore from './CreateStore'
+import rootSaga from "../sagas"
+import {INITIAL_STATE as NetworkStore} from './network'
+import {INITIAL_STATE as UserStore} from './user'
 
-const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'))
-
-const navReducer = (state = initialState, action) => {
-  const nextState = AppNavigator.router.getStateForAction(action, state)
-  // Simply return the original `state` if `nextState` is null or undefined.
-  return nextState || state
+export type Store = {
+  network: typeof NetworkStore,
+  user: typeof UserStore,
 }
 
 export default () => {
@@ -18,8 +16,6 @@ export default () => {
   const rootReducer = combineReducers({
     network: require('./network').reducer,
     user: require('./user').reducer,
-    nav: navReducer,
-    
   })
 
   return configureStore(rootReducer, rootSaga)

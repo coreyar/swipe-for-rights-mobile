@@ -1,5 +1,6 @@
-import { createReducer, createActions, Types as ReduxSauceTypes } from 'reduxsauce'
-import Immutable from 'seamless-immutable'
+// @flow
+import { createReducer, createActions } from 'reduxsauce'
+import { spread } from '../helpers'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -19,15 +20,16 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
-export const INITIAL_STATE = Immutable({
-  token: undefined
-})
+export const INITIAL_STATE = {
+  token: null,
+  address: null,
+}
 
 /* ------------- Reducers ------------- */
 
-export const loginSuccess = (state, {token}) => state.merge({ token })
-export const signUpSuccess = (state, {token}) => state.merge({ token })
-export const saveAddressSuccess = (state, {address}) => state.merge({address})
+const loginSuccess = (state, {token}) => spread(state, { token })
+const signUpSuccess = (state, {token}) => spread(state, { token })
+const saveAddressSuccess = (state, {address}) => spread(state, {address})
 
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -39,7 +41,3 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 /* ------------- Selectors ------------- */
-
-// Is the current user logged in?
-// export const isLoggedIn = loginState => loginState.username !== null
-
