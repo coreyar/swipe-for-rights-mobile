@@ -1,6 +1,7 @@
 // @flow
+import type { Store } from '../redux'
 
-const getAddress = (store) => store.user.address
+const getAddress = (store: Store) => store.user.address
 
 const selectors = {
   getAddress,

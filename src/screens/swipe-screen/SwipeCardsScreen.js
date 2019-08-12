@@ -1,152 +1,144 @@
+// @flow
 import React from 'react'
-import { Animated, View, Keyboard, LayoutAnimation } from 'react-native'
+import { Animated, View, LayoutAnimation } from 'react-native'
 import { connect } from 'react-redux'
+import { SwipeCards, Card, NoMoreCards } from 'react-native-swipe-cards'
 import Styles from './styles'
 import { Metrics } from '../../theme'
-// import CongressActions from '../redux/CongressRedux'
-// import AnimationActions from '../redux/AnimationRedux'
+import BillActions from '../../redux/bill'
 
-import { SwipeCards, Card, NoMoreCards, RoundButton, Alert } from '../../components'
+import { PrimaryButton, Alert } from '../../components'
 
-class SwipeScreen extends React.Component {
+type Props = {
+  cardExpanded: boolean,
+  bills: Array<any>,
+  supportBill: (card: Object) => void,
+  rejectBill: (card: Object) => void,
+  toggleCardExpanded: (card: Object) => void,
+}
 
-  constructor (props) {
+type State = {
+  visibleHeight: number,
+  fadeAnim: Animated.Value,
+  downAlert: boolean,
+}
+
+class SwipeScreen extends React.Component<Props, State> {
+  constructor(props) {
     super(props)
     this.state = {
       visibleHeight: Metrics.screenHeight,
       fadeAnim: new Animated.Value(0),
       downAlert: false,
-      animation: new Animated.Value(),
-      expanded: false,
-      initialHeight: Metrics.cardWidth
     }
   }
 
-  componentWillMount () {
-    // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
-    // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
-
-    // ListView
-    this._pressData = {}
-  }
-
-  componentWillUnmount () {
-    this.keyboardDidShowListener.remove()
-    this.keyboardDidHideListener.remove()
-    Animated.timing(          // Uses easing functions
-      this.state.fadeAnim,    // The value to drive
-        {toValue: 1}            // Configuration
+  componentWillUnmount() {
+    const { fadeAnim } = this.state
+    Animated.timing(
+      // Uses easing functions
+      fadeAnim, // The value to drive
+      { toValue: 1 }, // Configuration
     ).start()
   }
 
-  keyboardDidShow = (e) => {
+  keyboardDidShow = e => {
     // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    let newSize = Metrics.screenHeight - e.endCoordinates.height
+    const newSize = Metrics.screenHeight - e.endCoordinates.height
     this.setState({
       visibleHeight: newSize,
-      topLogo: {width: 100, height: 70}
     })
   }
 
-  keyboardDidHide = (e) => {
+  keyboardDidHide = () => {
     // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }
 
-  handleYup (card) {
-    this.props.supportBill(card)
+  handleYup = card => {
+    const { supportBill } = this.props
+    supportBill(card)
   }
 
-  handleNope (card) {
-    this.props.rejectBill(card)
+  handleNope = card => {
+    const { rejectBill } = this.props
+    rejectBill(card)
   }
 
-  handleDown (card) {
+  handleDown = () => {
     // Open Modal
-    this.setState({downAlert: true})
+    this.setState({ downAlert: true })
   }
 
-  handleUp (card) {
-    console.log('Card was sent up')
-  }
+  handleUp = () => {}
 
-  dismissCard () {
+  dismissCard = () => {
     // Closes Modal
-    this.setState({downAlert: false})
+    this.setState({ downAlert: false })
   }
 
-  saveCard () {
+  saveCard = () => {
     // Closes Modal
-    this.setState({downAlert: false})
+    this.setState({ downAlert: false })
   }
 
-  pressCard (bill) {
-    this.props.toggleCardExpanded()
+  pressCard = bill => {
+    const { toggleCardExpanded } = this.props
+    toggleCardExpanded(bill)
   }
 
-  _setMaxDimensions (event) {
-    this.setState({
-      maxheight: event.nativeEvent.layout.height
-    })
-  }
-
-  render () {
+  render() {
+    const { cardExpanded, bills } = this.props
+    const { downAlert, visibleHeight } = this.state
     return (
-      <View contentContainerStyle={{justifyContent: 'center'}} style={[Styles.container, {height: this.state.visibleHeight}]}>
+      <View style={[Styles.container, { height: visibleHeight }]}>
         <SwipeCards
-          cards={this.props.bills}
-          renderCard={(cardData) => <Card {...cardData} />}
+          cards={bills}
+          renderCard={cardData => <Card {...cardData} />}
           renderNoMoreCards={() => <NoMoreCards />}
-          onClickHandler={(cardData) => this.pressCard(cardData)}
-          handleYup={this.handleYup.bind(this)}
-          handleNope={this.handleNope.bind(this)}
-          handleUp={this.handleUp.bind(this)}
-          handleDown={this.handleDown.bind(this)}
+          onClickHandler={cardData => this.pressCard(cardData)}
+          handleYup={this.handleYup}
+          handleNope={this.handleNope}
+          handleUp={this.handleUp}
+          handleDown={this.handleDown}
           // renderNope={(pan, lastX, lastY) => this.renderYup(pan, lastX, lastY)}
-          cardExpanded={this.props.cardExpanded}
+          cardExpanded={cardExpanded}
           // smoothTransition
         />
         <Alert
-          title='What would you like to do with this card?'
-          show={this.state.downAlert}
-        >
-          <View style={Styles.buttonRow}>
-            <RoundButton
-              onPress={this.dismissCard.bind(this)}
-              text={'Dismiss'}
-              style={Styles.button}
-            />
-            <RoundButton
-              onPress={this.saveCard.bind(this)}
-              text={'Save'}
-              style={Styles.button}
-            />
-          </View>
-        </Alert>
+          title="What would you like to do with this card?"
+          visible={downAlert}
+          onDismiss={this.dismissCard}
+          actions={[
+            <PrimaryButton key="dismiss" onPress={this.dismissCard} style={Styles.button}>
+              Dismiss
+            </PrimaryButton>,
+            <PrimaryButton key="save" onPress={this.saveCard} style={Styles.button}>
+              Save
+            </PrimaryButton>,
+          ]}
+        />
       </View>
     )
   }
 }
 
-SwipeScreen.propTypes = {
-}
-
 const mapStateToProps = state => {
   return {
-    bills: []//state.congress.bills,
+    bills: state.congress.bills,
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    supportBill: (bill) => dispatch(CongressActions.supportBill(bill)),
-    rejectBill: (bill) => dispatch(CongressActions.rejectBill(bill)),
-    toggleCardExpanded: (cardData) => dispatch(AnimationActions.cardExpand(cardData))
+    supportBill: bill => dispatch(BillActions.supportBill(bill)),
+    rejectBill: bill => dispatch(BillActions.rejectBill(bill)),
+    toggleCardExpanded: cardData => dispatch(BillActions.cardExpand(cardData)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SwipeScreen)
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SwipeScreen)

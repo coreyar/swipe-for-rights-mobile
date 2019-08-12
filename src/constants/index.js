@@ -1,11 +1,11 @@
-
+// @flow
 const Roots = {
   Login: 'Login',
   Onboard: 'Onboard',
   Splash: 'Splash',
   Swipe: 'Swipe',
   SwipeCards: 'SwipeCards',
-  SwipeResult: 'SwipeResults',
+  SwipeResults: 'SwipeResults',
 }
 
 export default Roots
