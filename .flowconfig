@@ -25,6 +25,22 @@ node_modules/warning/.*
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
+; Not correctly typed
+.*/node_modules/react-native-paper/src/components/BottomNavigation.js
+.*/node_modules/react-native-paper/src/components/Banner.js
+.*/node_modules/react-native-paper/src/components/Avatar/AvatarText.js
+.*/node_modules/react-native-paper/src/components/TouchableRipple/index.js
+.*/node_modules/react-native-paper/src/components/Portal/PortalManager.js
+.*/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+.*/node_modules/react-native-paper/src/components/Menu/MenuItem.js
+.*/node_modules/react-native-paper/src/components/List/ListAccordion.js
+.*/node_modules/react-native-paper/src/components/Icon.js
+.*/node_modules/react-native-paper/src/components/Typography/Title.js
+.*/node_modules/react-native-paper/src/components/Chip.js
+.*/node_modules/react-native-paper/src/components/Card/CardCover.js
+.*/node_modules/react-native-paper/src/components/Avatar/AvatarIcon.js
+.*/node_modules/react-native-paper/src/components/Appbar/AppbarHeader.js
+.*/node_modules/@callstack/react-theme-provider/lib/.*
 
 [include]
 

@@ -723,7 +723,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "# added by Haul\nexport CLI_PATH=node_modules/@haul-bundler/cli/bin/haul.js\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		051B945D67BC8BC0EAB20AD2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -773,7 +773,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "# added by Haul\nexport CLI_PATH=node_modules/@haul-bundler/cli/bin/haul.js\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		5D4A0134A8A4B8B249ACE4BC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -6,21 +6,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
-    height: Metrics.section
+    height: Metrics.section,
   },
   button: {
-    margin: Metrics.doubleBaseMargin
-  },
-  buttonRow: {
-    flexDirection: 'row'
+    margin: Metrics.doubleBaseMargin,
   },
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundColor
+    backgroundColor: Colors.backgroundColor,
     // marginTop: 25
   },
   icon: {
-    color: Colors.steel
+    color: Colors.steel,
   },
   message: {
     marginTop: Metrics.baseMargin,
@@ -29,6 +26,6 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.regular,
     fontWeight: 'bold',
-    color: Colors.steel
-  }
+    color: Colors.steel,
+  },
 })

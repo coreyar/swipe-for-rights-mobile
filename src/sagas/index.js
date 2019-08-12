@@ -12,7 +12,7 @@ import { network } from './network'
 import { user } from './user'
 
 /* ------------- Navigation ------------- */
-import store from ".."
+import store from '..'
 
 /* ------------- API ------------- */
 
@@ -22,7 +22,7 @@ import store from ".."
 const api = APIService
 
 /* ------------- Connect Types To Sagas ------------- */
-export default function * root (): GeneratorType {
+export default function* root(): GeneratorType {
   yield all([
     takeLatest(NetworkTypes.START_CALL, network),
     takeLatest(UserTypes.LOGIN, user, api, store),
@@ -30,6 +30,5 @@ export default function * root (): GeneratorType {
     takeLatest(UserTypes.SIGN_UP, user, api, store),
     takeLatest(UserTypes.SAVE_ADDRESS, user, api, store),
     takeLatest(UserTypes.SIGN_UP_SUCCESS, user, api, store),
-
   ])
 }

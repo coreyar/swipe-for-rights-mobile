@@ -1,0 +1,8 @@
+**/*{.,-}min.js
+flow-typed/**/*.js
+coverage/
+android/
+ios/
+node_modules/
+web/src/bundle.js
+__tests__

@@ -6,28 +6,27 @@ import { spread } from '../helpers'
 const { Types, Creators } = createActions({
   startCall: ['endpoint', 'args', 'successAction'],
   endCall: [],
-  error: ['error']
+  error: ['error'],
 })
 
 export const NetworkTypes = Types
 export default Creators
 
-
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = {
   error: undefined,
-  fetching: false
+  fetching: false,
 }
 
 /* ------------- Reducers ------------- */
 
-const startCall = (state) => spread(state, { fetching: true })
-const endCall = (state) => spread(state, { fetching: false})
-const errorReducer = (state, {error}) => {
+const startCall = state => spread(state, { fetching: true })
+const endCall = state => spread(state, { fetching: false })
+const errorReducer = (state, { error }) => {
   let message = error && error.response ? error.response.data : undefined
   message = !message && error && error.message ? error.message : message
-  return spread(state, {error: message})
+  return spread(state, { error: message })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -39,5 +38,3 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 /* ------------- Selectors ------------- */
-
-

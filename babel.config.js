@@ -1,3 +1,8 @@
 module.exports = {
-  presets: ["module:metro-react-native-babel-preset"],
+  presets: ["module:@haul-bundler/babel-preset-react-native"],
+  env: {
+    production: {
+      plugins: ['react-native-paper/babel'],
+    },
+  },
 };

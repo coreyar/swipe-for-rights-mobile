@@ -11,12 +11,11 @@ const { Types, Creators } = createActions({
   signUpSuccess: ['token'],
 
   saveAddress: ['address', 'navigator'],
-  saveAddressSuccess: []
+  saveAddressSuccess: [],
 })
 
 export const UserTypes = Types
 export default Creators
-
 
 /* ------------- Initial State ------------- */
 
@@ -27,10 +26,9 @@ export const INITIAL_STATE = {
 
 /* ------------- Reducers ------------- */
 
-const loginSuccess = (state, {token}) => spread(state, { token })
-const signUpSuccess = (state, {token}) => spread(state, { token })
-const saveAddressSuccess = (state, {address}) => spread(state, {address})
-
+const loginSuccess = (state, { token }) => spread(state, { token })
+const signUpSuccess = (state, { token }) => spread(state, { token })
+const saveAddressSuccess = (state, { address }) => spread(state, { address })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
