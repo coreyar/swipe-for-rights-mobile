@@ -6,11 +6,6 @@ Install dependencies with
 ```
 $ yarn
 ```
-Start the packager
-```
-$ yarn haul
-
-```
 
 To run the iOS app use.
 
